@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class UsuariosController {
@@ -23,7 +25,16 @@ public class UsuariosController {
 
     @PostMapping("/usuarios")
     public ResponseEntity<Usuario> adicionarUsuario(@RequestBody Usuario usuario) {
-        return new ResponseEntity<Usuario>(usuariosService.adicionarUsuario(usuario), HttpStatus.CREATED);
+
+        Optional<Usuario> authUsuario = usuariosService.findByEmail(usuario.getEmail());
+
+        if(authUsuario.isPresent()){
+            return new ResponseEntity<Usuario>(HttpStatus.CONFLICT);
+        }
+        else{
+            return new ResponseEntity<Usuario>(usuariosService.adicionarUsuario(usuario), HttpStatus.CREATED);
+        }
+
     }
 
     @GetMapping("/usuarios")

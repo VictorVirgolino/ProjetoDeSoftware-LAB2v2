@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class TokenFiltro extends GenericFilterBean {
 
-    private final static int TOKEN_INDEX = 7;
+    public final static int TOKEN_INDEX = 7;
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException{
 

@@ -6,13 +6,14 @@ import ProjetoDeSoftwareLAB2.demo.entities.Usuario;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuariosService {
 
-    private UsuariosRepository<Usuario, Long > usuariosDAO;
+    private UsuariosRepository<Usuario, String > usuariosDAO;
 
-    public UsuariosService(UsuariosRepository<Usuario, Long> usuariosDAO){
+    public UsuariosService(UsuariosRepository<Usuario, String> usuariosDAO){
         super();
         this.usuariosDAO = usuariosDAO;
     }
@@ -22,12 +23,20 @@ public class UsuariosService {
         return usuariosDAO.save(usuario);
     }
 
-    public void deletarUsuario(Usuario usuario){
-        usuariosDAO.delete(usuario);
+    public Usuario deletarUsuario(String email){
+
+        Optional<Usuario> usuario = findByEmail(email);
+
+        if(usuario.isPresent()) {
+            usuariosDAO.delete(usuario.get());
+            return usuario.get();
+        }
+
+        return null;
     }
 
-    public Usuario findByEmail(String email) {
-        return usuariosDAO.findByEmail(email);
+    public Optional<Usuario> findByEmail(String email) {
+        return usuariosDAO.findById(email);
     }
 
 

@@ -9,10 +9,6 @@ import javax.persistence.Id;
 public class Usuario {
 
     @Id
-    @GeneratedValue
-    private Long id;
-
-    @Column(unique = true)
     private String email;
 
     private String nome;
@@ -22,20 +18,11 @@ public class Usuario {
         super();
     }
 
-    public Usuario(Long id, String email, String nome, String senha){
+    public Usuario(String email, String nome, String senha){
         super();
-        this.id = id;
         this.email =email;
         this.nome = nome;
         this.senha = senha;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getEmail() {
