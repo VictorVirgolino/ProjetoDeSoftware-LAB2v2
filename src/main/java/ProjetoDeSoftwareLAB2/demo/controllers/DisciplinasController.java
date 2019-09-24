@@ -1,6 +1,7 @@
 package ProjetoDeSoftwareLAB2.demo.controllers;
 
 import ProjetoDeSoftwareLAB2.demo.entities.Disciplina;
+import ProjetoDeSoftwareLAB2.demo.entities.Usuario;
 import ProjetoDeSoftwareLAB2.demo.tools.EntradaDeDados;
 import ProjetoDeSoftwareLAB2.demo.services.DisciplinasService;
 import ProjetoDeSoftwareLAB2.demo.services.JWTService;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,8 +41,17 @@ public class DisciplinasController {
     }
 
     @GetMapping("/disciplinas")
-    public ResponseEntity<List<Disciplina>> getDisciplinas(){
-        return new ResponseEntity<>(disciplinasService.getDisciplinas(), HttpStatus.OK);
+    public ResponseEntity<List<Disciplina>> getDisciplinas(@RequestHeader("Authorization") String header,@RequestBody EntradaDeDados dados){
+
+        try{
+            if(jwtService.usuarioTemPermissao(header, dados.getEmail())){
+                return new ResponseEntity<>(disciplinasService.getDisciplinas(), HttpStatus.OK);
+            }
+        } catch (ServletException e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @DeleteMapping("/disciplinas/{id}")

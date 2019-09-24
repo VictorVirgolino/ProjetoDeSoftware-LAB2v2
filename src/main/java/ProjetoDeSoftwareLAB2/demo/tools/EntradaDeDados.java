@@ -4,10 +4,12 @@ public class EntradaDeDados {
 
     private String comentario;
     private double nota;
+    private String email;
 
-    public EntradaDeDados(String comentario, double nota){
+    public EntradaDeDados(String comentario, double nota, String email){
         this.comentario = comentario;
         this.nota = nota;
+        this.email = email;
     }
 
     public String getComentario() {
@@ -24,5 +26,13 @@ public class EntradaDeDados {
 
     public void setNota(double nota) {
         this.nota = nota;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
