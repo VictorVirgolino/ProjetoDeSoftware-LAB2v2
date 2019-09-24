@@ -1,5 +1,6 @@
 package ProjetoDeSoftwareLAB2.demo.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -9,7 +10,10 @@ public class Disciplina {
     @Id
     @GeneratedValue
     private long id;
+
+    @Column(unique = true)
     private String nome;
+
     private double nota;
     private String comentarios;
     private int likes;

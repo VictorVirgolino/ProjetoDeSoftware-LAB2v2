@@ -9,4 +9,5 @@ import java.io.Serializable;
 @Repository
 public interface DisciplinasRepository<T, ID extends Serializable> extends JpaRepository<Disciplina, Long> {
 
+    public Disciplina findByNome(String nome);
 }

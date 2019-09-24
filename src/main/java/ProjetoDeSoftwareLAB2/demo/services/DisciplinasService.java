@@ -18,6 +18,11 @@ public class DisciplinasService {
     }
 
     public Disciplina adicionaDisciplina(Disciplina disciplina){
+
+        if(DisciplinaExist(disciplina)){
+            return null;
+        }
+
         return disciplinasDAO.save(disciplina);
     }
 
@@ -27,6 +32,11 @@ public class DisciplinasService {
 
     public Optional<Disciplina> getDisciplina(Long id){
         return disciplinasDAO.findById(id);
+    }
+
+    private Boolean DisciplinaExist(Disciplina disciplina){
+        Disciplina existe = disciplinasDAO.findByNome(disciplina.getNome());
+        return existe != null;
     }
 
 
