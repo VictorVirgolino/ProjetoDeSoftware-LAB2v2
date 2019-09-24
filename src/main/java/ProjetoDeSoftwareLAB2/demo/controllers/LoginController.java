@@ -56,14 +56,11 @@ public class LoginController {
 
     @DeleteMapping("/usuarios/{email}")
     public ResponseEntity<Usuario> removeUsuario(@PathVariable String email, @RequestHeader("Authorization") String header){
-        System.out.print("testando");
         if(!usuariosService.findByEmail(email).isPresent()){
-            System.out.print("passou no if");
             return new ResponseEntity<Usuario>(HttpStatus.NOT_FOUND);
         }
         try{
             if(jwtService.usuarioTemPermissao(header, email)){
-                System.out.print("passou na permissao");
                 return new ResponseEntity<Usuario>(usuariosService.deletarUsuario(email), HttpStatus.OK);
             }
         } catch (ServletException e) {
