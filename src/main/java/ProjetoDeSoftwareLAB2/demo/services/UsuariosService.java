@@ -43,4 +43,11 @@ public class UsuariosService {
     public List<Usuario> getUsuarios() {
         return usuariosDAO.findAll();
     }
+
+    public void save(List<Usuario> users) {
+
+        for (Usuario usuario: users) {
+            adicionarUsuario(usuario);
+        }
+    }
 }

@@ -30,5 +30,9 @@ public class DisciplinasService {
     }
 
 
-
+    public void save(List<Disciplina> disciplinas) {
+        for (Disciplina disciplina: disciplinas) {
+            adicionaDisciplina(disciplina);
+        }
+    }
 }
