@@ -19,9 +19,10 @@ public class DisciplinasController {
     private DisciplinasService disciplinasService;
     private JWTService jwtService;
 
-    public DisciplinasController(DisciplinasService disciplinasService){
+    public DisciplinasController(DisciplinasService disciplinasService, JWTService jwtService){
         super();
         this.disciplinasService = disciplinasService;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("/disciplinas")
@@ -30,10 +31,18 @@ public class DisciplinasController {
     }
 
     @GetMapping("/disciplinas/{id}")
-    public ResponseEntity<Disciplina> getDisciplina(@PathVariable Long id){
-        Optional<Disciplina> disciplina = disciplinasService.getDisciplina(id);
-        if(disciplina.isPresent()){
-            return new ResponseEntity<Disciplina>(disciplina.get(),HttpStatus.OK);
+    public ResponseEntity<Disciplina> getDisciplina(@PathVariable Long id, @RequestHeader("Authorization") String header,@RequestBody EntradaDeDados dados){
+        if(disciplinasService.getDisciplina(id).isPresent()){
+
+            try{
+                if(jwtService.usuarioTemPermissao(header, dados.getEmail())){
+                    return new ResponseEntity<Disciplina>(disciplinasService.getDisciplina(id).get(),HttpStatus.OK);
+                }
+            } catch (ServletException e) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         else{
             return new ResponseEntity<Disciplina>(HttpStatus.NOT_FOUND);
@@ -55,33 +64,68 @@ public class DisciplinasController {
     }
 
     @DeleteMapping("/disciplinas/{id}")
-    public ResponseEntity<Disciplina> deleteDisciplina(@PathVariable Long id){
+    public ResponseEntity<Disciplina> deleteDisciplina(@PathVariable Long id, @RequestHeader("Authorization") String header,@RequestBody EntradaDeDados dados){
         if (disciplinasService.getDisciplina(id).isPresent()){
-            return new ResponseEntity<>(disciplinasService.deletaDisciplina(id), HttpStatus.OK);
+
+            try{
+                if(jwtService.usuarioTemPermissao(header, dados.getEmail())){
+                    return new ResponseEntity<>(disciplinasService.deletaDisciplina(id), HttpStatus.OK);
+                }
+            } catch (ServletException e) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/disciplinas/likes/{id}")
-    public ResponseEntity<Disciplina> incrementaLikes(@PathVariable Long id){
+    public ResponseEntity<Disciplina> incrementaLikes(@PathVariable Long id, @RequestHeader("Authorization") String header,@RequestBody EntradaDeDados dados){
         if(disciplinasService.getDisciplina(id).isPresent()){
-            return new ResponseEntity<>(disciplinasService.incrementaLikes(id), HttpStatus.OK);
+            try{
+                if(jwtService.usuarioTemPermissao(header, dados.getEmail())){
+                    return new ResponseEntity<>(disciplinasService.incrementaLikes(id), HttpStatus.OK);
+                }
+            } catch (ServletException e) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/disciplinas/nota/{id}")
-    public ResponseEntity<Disciplina> modificaNota(@PathVariable Long id, @RequestBody EntradaDeDados dados){
+    public ResponseEntity<Disciplina> modificaNota(@PathVariable Long id, @RequestHeader("Authorization") String header, @RequestBody EntradaDeDados dados){
         if(disciplinasService.getDisciplina(id).isPresent()){
-            return new ResponseEntity<>(disciplinasService.modificarNota(id, dados.getNota()), HttpStatus.OK);
+            try{
+                if(jwtService.usuarioTemPermissao(header, dados.getEmail())){
+                    return new ResponseEntity<>(disciplinasService.modificarNota(id, dados.getNota()), HttpStatus.OK);
+                }
+            } catch (ServletException e) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/disciplinas/comentarios/{id}")
-    public ResponseEntity<Disciplina> adicionarComentario(@PathVariable Long id, @RequestBody EntradaDeDados dados){
+    public ResponseEntity<Disciplina> adicionarComentario(@PathVariable Long id, @RequestHeader("Authorization") String header, @RequestBody EntradaDeDados dados){
         if(disciplinasService.getDisciplina(id).isPresent()){
-            return new ResponseEntity<>(disciplinasService.adicionarComentario(id, dados.getComentario()), HttpStatus.OK);
+            try{
+                if(jwtService.usuarioTemPermissao(header, dados.getEmail())){
+                    return new ResponseEntity<>(disciplinasService.adicionarComentario(id, dados.getComentario()), HttpStatus.OK);
+                }
+            } catch (ServletException e) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
