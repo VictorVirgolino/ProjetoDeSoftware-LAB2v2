@@ -1,0 +1,27 @@
+[
+  {
+    "email": "antonio@gmail.com",
+    "nome": "antonio",
+    "senha": "ant"
+  },
+  {
+    "email": "bruno@gmail.com",
+    "nome":"bruno",
+    "senha":"bru"
+  },
+  {
+    "email": "carol@gmail.com",
+    "nome":"carol",
+    "senha":"car"
+  },
+  {
+    "email": "daniel@gmail.com",
+    "nome":"daniel",
+    "senha":"dan"
+  },
+  {
+    "email": "eliane@gmail.com",
+    "nome":"eliane",
+    "senha":"eli"
+  }
+]
